@@ -1,0 +1,130 @@
+blueprint:
+  name: Hue Dimmer v2 simple
+  description: Version 1 - Simple automation to turn on set of lights in z2m wiht a hue dimmer switch.
+  domain: automation
+  author: Chris Waldmeyer
+  source_url: 
+  input:
+    hue_dimmer:
+      name: Hue Dimmer Entity
+      description: The hue dimmer assigned to the area
+      default: ""
+      selector:
+        device:
+          multiple: false
+    lights:
+      name: Lights
+      description: The lights assigned to this dimmer
+      default: ""
+      selector:
+        entity:
+          multiple: true
+          filter:
+            domain: light
+    switch_scene:
+      name: Scene
+      description: applies a scene preset tot bottom button
+      default: ""
+      selector:
+        entity:
+          multiple: false
+          filter:
+            domain: scene
+    default_brightness:
+      name: Default Brightness
+      description: set the default brightness when turning on the light
+      default: "80"
+      selector:
+        number:
+          min: 5
+          max: 95
+          unit_of_measurement: percent
+    default_color_temp:
+      name: default Colour Temperature
+      description: set the default brightness when turning on the light
+      default: "3410"
+      selector:
+        color_temp:
+    transition_time:
+      name: Default Brightness
+      description: set the default brightness when turning on the light
+      default: "1"
+      selector:
+        number:
+          min: 0
+          max: 30
+
+triggers:
+  - domain: mqtt
+    device_id: !input hue_dimmer
+    type: action
+    subtype: on_press
+    trigger: device
+    id: trigger_on_press
+  - domain: mqtt
+    device_id: !input hue_dimmer
+    type: action
+    subtype: off_press
+    trigger: device
+    id: trigger_off_press
+  - domain: mqtt
+    device_id: !input hue_dimmer
+    type: action
+    subtype: up_press
+    trigger: device
+    id: trigger_up_press
+  - domain: mqtt
+    device_id: !input hue_dimmer
+    type: action
+    subtype: down_press
+    trigger: device
+    id: trigger_down_press
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - trigger_on_press
+        sequence:
+          - action: light.toggle
+            data:
+              transition: !input transition_time
+              brightness_pct: !input default_brightness
+              color_temp_kelvin: !input default_color_temp
+            target:
+              entity_id: !input lights
+      - conditions:
+          - condition: trigger
+            id:
+              - trigger_off_press
+        sequence:
+          - action: scene.turn_on
+            metadata: {}
+            data:
+              transition: !input transition_time
+            target:
+              entity_id: scene.study_lamp_standard
+      - conditions:
+          - condition: trigger
+            id:
+              - trigger_up_press
+        sequence:
+          - action: light.turn_on
+            metadata: {}
+            data:
+              transition: !input transition_time
+              brightness_step_pct: 5
+            target:
+              entity_id: !input lights
+      - conditions:
+          - condition: trigger
+            id:
+              - trigger_down_press
+        sequence:
+          - action: light.turn_on
+            metadata: {}
+            data:
+              transition: !input transition_time
+              brightness_step_pct: -5
+            target:
+              entity_id: !input lights
