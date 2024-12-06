@@ -3,7 +3,7 @@ blueprint:
   description: Version 1 - Simple automation to turn on set of lights in z2m wiht a hue dimmer switch.
   domain: automation
   author: Chris Waldmeyer
-  source_url: 
+  source_url: https://raw.githubusercontent.com/Basop/homeassistant/refs/heads/main/Blueprints/Hue_dimmer_v2_simple.yaml
   input:
     hue_dimmer:
       name: Hue Dimmer Entity
