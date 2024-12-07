@@ -35,7 +35,7 @@ blueprint:
       description: set the default brightness when turning on the light
       default: "3410"
       selector:
-        color_temp: kelvin
+        color_temp:
     transition_time:
       name: Transition time
       description: set the default brightness when turning on the light
