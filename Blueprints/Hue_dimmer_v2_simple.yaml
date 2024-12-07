@@ -46,7 +46,7 @@ blueprint:
       selector:
         color_temp:
     transition_time:
-      name: Default Brightness
+      name: Transition time
       description: set the default brightness when turning on the light
       default: "1"
       selector:
@@ -103,7 +103,7 @@ actions:
             data:
               transition: !input transition_time
             target:
-              entity_id: scene.study_lamp_standard
+              entity_id: !input switch_scene
       - conditions:
           - condition: trigger
             id:

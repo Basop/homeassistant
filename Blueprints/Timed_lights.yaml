@@ -1,0 +1,73 @@
+blueprint:
+  name: Timed Light
+  description: Version 1 - Simple blueprint to turn on a light scene at a certain time
+  domain: automation
+  author: Chris Waldmeyer
+  source_url: https://raw.githubusercontent.com/Basop/homeassistant/refs/heads/main/Blueprints/Timed_lights.yaml
+  input:
+    time_input:
+      name: Turn on time
+      description: time the automation will run
+      default: ''
+      selector:
+        time:
+    days_input:
+      name: days
+      description: days to run the automation
+      default: ''
+      selector:
+        select:
+          options:
+            - mon
+            - tue
+            - wed
+            - thu
+            - fri
+            - sat
+            - sun
+          multiple: true
+    lights:
+      name: Lights
+      description: The lights assigned to this automation
+      default: ''
+      selector:
+        entity:
+          multiple: true
+          filter:
+          - domain:
+            - light
+    switch_scene:
+      name: Scene
+      description: applies a scene preset
+      default: ''
+      selector:
+        entity:
+          multiple: false
+          filter:
+          - domain:
+            - scene
+    transition_time:
+      name: Transition Time
+      description: set the default brightness when turning on the light
+      default: '1'
+      selector:
+        number:
+          min: 0.0
+          max: 30.0
+          mode: slider
+          step: 1.0
+
+triggers:
+  - trigger: time
+    at: !input time_input
+conditions:
+  - condition: time
+    weekday: !input days_input
+actions:
+  - action: scene.turn_on
+    metadata: {}
+    data:
+      transition: !input transition_time
+    target:
+      entity_id: !input switch_scene
+mode: single
