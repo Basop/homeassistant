@@ -1,5 +1,5 @@
 blueprint:
-  name: Hue Dimmer v2 simple
+  name: Hue Dimmer v2 simple No Scene
   description: Version 1 - Simple automation to turn on set of lights in z2m wiht a hue dimmer switch.
   domain: automation
   author: Chris Waldmeyer
