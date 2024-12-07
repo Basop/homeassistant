@@ -21,15 +21,6 @@ blueprint:
           multiple: true
           filter:
             domain: light
-    switch_scene:
-      name: Scene
-      description: applies a scene preset tot bottom button
-      default: ""
-      selector:
-        entity:
-          multiple: false
-          filter:
-            domain: scene
     default_brightness:
       name: Default Brightness
       description: set the default brightness when turning on the light
@@ -44,7 +35,7 @@ blueprint:
       description: set the default brightness when turning on the light
       default: "3410"
       selector:
-        color_temp:
+        color_temp: kelvin
     transition_time:
       name: Transition time
       description: set the default brightness when turning on the light
@@ -93,17 +84,6 @@ actions:
               color_temp_kelvin: !input default_color_temp
             target:
               entity_id: !input lights
-      - conditions:
-          - condition: trigger
-            id:
-              - trigger_off_press
-        sequence:
-          - action: scene.turn_on
-            metadata: {}
-            data:
-              transition: !input transition_time
-            target:
-              entity_id: !input switch_scene
       - conditions:
           - condition: trigger
             id:
