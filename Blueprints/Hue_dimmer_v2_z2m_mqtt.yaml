@@ -1,0 +1,54 @@
+blueprint:
+  name: Hue Dimmer v2 z2m MQTT
+  description: Version 1 - Triggers on MQTT events, does dimming on hold button.
+  domain: automation
+  author: Chris Waldmeyer
+  source_url: https://raw.githubusercontent.com/Basop/homeassistant/refs/heads/main/Blueprints/Hue_dimmer_v2_z2m_MQTT.yaml
+  input:
+    mqtt_topic:
+      name: eg. zigbee2mqtt/dimmer_main/action
+      description: The dimmer topic assigned to the area
+      default: ''
+      selector:
+        device:
+          multiple: false
+    lights:
+      name: Lights
+      description: The lights assigned to this dimmer
+      default: ''
+      selector:
+        entity:
+          multiple: true
+          filter:
+          - domain:
+            - light
+    default_brightness:
+      name: Default Brightness
+      description: set the default brightness when turning on the light
+      default: '90'
+      selector:
+        number:
+          min: 5.0
+          max: 95.0
+          unit_of_measurement: percent
+          mode: slider
+          step: 1.0
+    transition_time:
+      name: Transition time
+      description: set the default brightness when turning on the light
+      default: '1'
+      selector:
+        number:
+          min: 0.0
+          max: 30.0
+          mode: slider
+          step: 1.0
+    scene_selector:
+      name: Scene Selector
+      description: select the helper scen selector template
+      default: ''
+      entity:
+          multiple: true
+          filter:
+          - domain:
+            - select
