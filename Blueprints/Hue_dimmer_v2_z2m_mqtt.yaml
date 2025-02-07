@@ -49,6 +49,3 @@ blueprint:
       default: ''
       entity:
           multiple: false
-          filter:
-          - domain:
-            - select
