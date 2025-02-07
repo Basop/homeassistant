@@ -48,7 +48,7 @@ blueprint:
       description: select the helper scen selector template
       default: ''
       entity:
-          multiple: true
+          multiple: false
           filter:
           - domain:
             - select
