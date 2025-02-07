@@ -8,7 +8,7 @@ blueprint:
     mqtt_topic:
       name: eg. zigbee2mqtt/dimmer_main/action
       description: The dimmer topic assigned to the area
-      default: ''
+      default: '!input mqtt_topic'
       selector:
         device:
           multiple: false
@@ -33,19 +33,110 @@ blueprint:
           unit_of_measurement: percent
           mode: slider
           step: 1.0
-    transition_time:
-      name: Transition time
-      description: set the default brightness when turning on the light
-      default: '1'
-      selector:
-        number:
-          min: 0.0
-          max: 30.0
-          mode: slider
-          step: 1.0
     scene_selector:
       name: Scene Selector
       description: select the helper scen selector template
       default: ''
       entity:
           multiple: false
+
+
+description: ""
+triggers:
+  - trigger: mqtt
+    topic: !input mqtt_topic
+    payload: up_hold
+    id: up-hold
+  - trigger: mqtt
+    topic: !input mqtt_topic
+    payload: up_hold_release
+    id: up-press-release
+  - trigger: mqtt
+    topic: !input mqtt_topic
+    payload: down_hold
+    id: down-hold
+  - trigger: mqtt
+    topic: !input mqtt_topic
+    payload: down_hold_release
+    id: down-hold-release
+  - trigger: mqtt
+    topic: !input mqtt_topic
+    payload: on_press
+    id: on-press
+  - trigger: mqtt
+    topic: !input mqtt_topic
+    payload: off_press
+    id: off-press
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - up-hold
+        sequence:
+          - repeat:
+              sequence:
+                - delay:
+                    hours: 0
+                    minutes: 0
+                    seconds: 0
+                    milliseconds: 200
+                - action: light.turn_on
+                  metadata: {}
+                  data:
+                    brightness_step_pct: 5
+                    transition: 0.6
+                  target:
+                    device_id: !input lights
+              until:
+                - condition: trigger
+                  id:
+                    - up-hold
+      - conditions:
+          - condition: trigger
+            id:
+              - down-hold
+        sequence:
+          - repeat:
+              sequence:
+                - delay:
+                    hours: 0
+                    minutes: 0
+                    seconds: 0
+                    milliseconds: 200
+                - action: light.turn_on
+                  metadata: {}
+                  data:
+                    brightness_step_pct: -5
+                    transition: 0.6
+                  target:
+                    device_id: !input lights
+              until:
+                - condition: trigger
+                  id:
+                    - down-hold
+      - conditions:
+          - condition: trigger
+            id:
+              - on-press
+        sequence:
+          - action: light.toggle
+            metadata: {}
+            data:
+              brightness_pct: 90
+              transition: 1
+            target:
+              device_id: !input lights
+      - conditions:
+          - condition: trigger
+            id:
+              - off-press
+        sequence:
+          - action: select.select_next
+            metadata: {}
+            data:
+              cycle: true
+            target:
+              entity_id: !input scene_selector
+mode: single
