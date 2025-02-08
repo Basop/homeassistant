@@ -8,24 +8,24 @@ blueprint:
     mqtt_topic:
       name: eg. zigbee2mqtt/dimmer_main/action
       description: The dimmer topic assigned to the area
-      default: '!input mqtt_topic'
+      default: "zigbee2mqtt/dimmer_study_main/action"
       selector:
         device:
           multiple: false
     lights:
       name: Lights
       description: The lights assigned to this dimmer
-      default: ''
+      default: ""
       selector:
         entity:
           multiple: true
           filter:
-          - domain:
-            - light
+            - domain:
+                - light
     default_brightness:
       name: Default Brightness
       description: set the default brightness when turning on the light
-      default: '90'
+      default: "90"
       selector:
         number:
           min: 5.0
@@ -33,12 +33,12 @@ blueprint:
           unit_of_measurement: percent
           mode: slider
           step: 1.0
-    scene_selector:
-      name: Scene Selector
-      description: select the helper scen selector template
-      default: ''
-      entity:
-
+    scene_helper:
+      name: Scene Helper
+      description: Select the scene helper assigned to this area.
+      default: ""
+      selector:
+        entity:
 
 description: ""
 triggers:
@@ -137,5 +137,5 @@ actions:
             data:
               cycle: true
             target:
-              entity_id: !input scene_selector
+              entity_id: !input scene_helper
 mode: single
