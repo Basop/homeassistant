@@ -16,7 +16,7 @@ blueprint:
       description: The lights assigned to this dimmer
       default: ""
       selector:
-        entity:
+        device:
           multiple: true
           filter:
             - domain:
