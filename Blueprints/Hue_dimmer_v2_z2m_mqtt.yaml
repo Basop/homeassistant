@@ -10,8 +10,7 @@ blueprint:
       description: The dimmer topic assigned to the area
       default: "zigbee2mqtt/dimmer_study_main/action"
       selector:
-        device:
-          multiple: false
+        text:
     lights:
       name: Lights
       description: The lights assigned to this dimmer
