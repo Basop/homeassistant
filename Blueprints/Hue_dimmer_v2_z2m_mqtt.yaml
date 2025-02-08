@@ -16,7 +16,7 @@ blueprint:
       description: The lights assigned to this dimmer
       default: ""
       selector:
-        device:
+        entity:
           multiple: true
           filter:
             - domain:
@@ -86,7 +86,7 @@ actions:
                     brightness_step_pct: 5
                     transition: 0.6
                   target:
-                    device_id: !input lights
+                    entity_id: !input lights
               until:
                 - condition: trigger
                   id:
@@ -109,7 +109,7 @@ actions:
                     brightness_step_pct: -5
                     transition: 0.6
                   target:
-                    device_id: !input lights
+                    entity_id: !input lights
               until:
                 - condition: trigger
                   id:
@@ -125,7 +125,7 @@ actions:
               brightness_pct: 90
               transition: 1
             target:
-              device_id: !input lights
+              entity_id: !input lights
       - conditions:
           - condition: trigger
             id:
