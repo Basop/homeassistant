@@ -3,7 +3,7 @@ blueprint:
   description: Version 1 - Triggers on MQTT events, does dimming on hold button.
   domain: automation
   author: Chris Waldmeyer
-  source_url: https://raw.githubusercontent.com/Basop/homeassistant/refs/heads/main/Blueprints/Hue_dimmer_v2_z2m_MQTT.yaml
+  source_url: https://raw.githubusercontent.com/Basop/homeassistant/refs/heads/main/Blueprints/Hue_dimmer_v2_z2m_mqtt.yaml
   input:
     mqtt_topic:
       name: eg. zigbee2mqtt/dimmer_main/action
